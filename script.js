@@ -26,160 +26,39 @@ let quiz = [
     }
 ]
 
-let highscores = [];
-
-//QUIZ SETUP
 let questionPointer = 0;
+
 let questionEl = $("<h1>");
 let choiceListEl = $("<ol>");
 let choice1El = $("<li>");
 let choice2El = $("<li>");
 let choice3El = $("<li>");
 let choice4El = $("<li>");
-questionEl.attr("id", "question");
-choice1El.attr("id", "choice-1");
-choice2El.attr("id", "choice-2");
-choice3El.attr("id", "choice-3");
-choice4El.attr("id", "choice-4");
-choice1El.attr("data-value", "0");
-choice2El.attr("data-value", "1");
-choice3El.attr("data-value", "2");
-choice4El.attr("data-value", "3");
-choiceListEl.append(choice1El);
-choiceListEl.append(choice2El);
-choiceListEl.append(choice3El);
-choiceListEl.append(choice4El);
-
+let highscoreLink = $("<a>");
+let timerStopRef = null;
+let timerDiv = $("<header>");
+let alottedTime = 100;
+let quizPrompt = $("<div>");
+let h1 = $("<h1>");
+let h4 = $("<h4>");
+let startDiv = $("<div>");
+let filler = $("<div>");
+let startButton = $("<button>");
 let scoreBlurb = $("<h4>");
 let initialForm = $("<form>");
 let input = $("<input>");
 let submitButton = $("<input>");
-
-scoreBlurb.text(`You achieved a score of: `);
-submitButton.attr("type", "submit");
-input.attr("id", "input-initials");
-initialForm.append(scoreBlurb);
-initialForm.append(input);
-initialForm.append(submitButton);
-
-
-//HIGHSCORE-PAGE LINK
-let highscoreLink = $("<a>");
+let score = 0;
 
 highscoreLink.attr("href", "./highscores.html");
 highscoreLink.addClass("col-sm-6");
 highscoreLink.text("View Highscores");
 
-$("#headings").append(highscoreLink);
-
-//TIMER LOGIC
-let timerDiv = $("<header>");
-let alottedTime = 100;
-
 timerDiv.addClass("col-sm-6");
 timerDiv.attr("id", "timer")
 timerDiv.text(`Time: ${alottedTime}`);
 
-$("#headings").append(timerDiv);
-
-let score = alottedTime;
-
-input.on("submit", function (e) {
-    e.preventDefault();
-    highscores.unshift({ initials: e.value, hs: score });
-    highscoreUpdate();
-    console.log(highscores[0]);
-});
-
-choice1El.on("click", function () {
-    if (parseInt(choice1El.attr("data-value")) === quiz[questionPointer].answer) {
-        console.log("this is correct");
-        questionPointer++;
-        console.log(questionPointer);
-        if (questionPointer < 5) {
-            startQuiz();
-        }
-        if (questionPointer == 5) {
-            $("#quiz").empty();
-            let score = alottedTime;
-            console.log(score);
-            scoreBlurb.text(`You achieved a score of: ${score} \nSave your initials to the Highscore list?`);
-            $("#quiz").append(initialForm);
-
-
-        }
-    } else {
-        alottedTime -= 10;
-    }
-});
-
-choice2El.on("click", function () {
-    if (parseInt(choice2El.attr("data-value")) === quiz[questionPointer].answer) {
-        console.log("this is correct");
-        questionPointer++;
-        console.log(questionPointer);
-        if (questionPointer < 5) {
-            startQuiz();
-        }
-        if (questionPointer == 5) {
-            $("#quiz").empty();
-            let score = alottedTime;
-            console.log(score);
-            scoreBlurb.text(`You achieved a score of: ${score} \nSave your initials to the Highscore list?`);
-            $("#quiz").append(initialForm);
-        }
-    } else {
-        alottedTime -= 10;
-    }
-});
-
-choice3El.on("click", function () {
-    if (parseInt(choice3El.attr("data-value")) === quiz[questionPointer].answer) {
-        console.log("this is correct");
-        questionPointer++;
-        console.log(questionPointer);
-        if (questionPointer < 5) {
-            startQuiz();
-        }
-        if (questionPointer == 5) {
-            $("#quiz").empty();
-            let score = alottedTime;
-            console.log(score);
-            scoreBlurb.text(`You achieved a score of: ${score} \nSave your initials to the Highscore list?`);
-            $("#quiz").append(initialForm);
-        }
-    } else {
-        alottedTime -= 10;
-    }
-});
-
-choice4El.on("click", function () {
-    if (parseInt(choice4El.attr("data-value")) === quiz[questionPointer].answer) {
-        console.log("this is correct");
-        questionPointer++;
-        console.log(questionPointer);
-        if (questionPointer < 5) {
-            startQuiz();
-        }
-        if (questionPointer == 5) {
-            $("#quiz").empty();
-            let score = alottedTime;
-            console.log(score);
-            scoreBlurb.text(`You achieved a score of: ${score} \nSave your initials to the Highscore list?`);
-            $("#quiz").append(initialForm);
-        }
-    } else {
-        alottedTime -= 10;
-    }
-});
-
-
-//QUIZ PROMPT
-let promptQuiz = $("<div>");
-let h1 = $("<h1>");
-let h4 = $("<h4>");
-
-promptQuiz.addClass("col-sm-12");
+quizPrompt.addClass("col-sm-12");
 
 h1.attr("style", "height: 60px;");
 h1.addClass("col-sm-12")
@@ -189,11 +68,31 @@ h1.text("Press START to begin the coding quiz.");
 h4.addClass("col-sm-12");
 h4.text("You will have 100 seconds to answer the questions correctly. For every wrong answer, 10 seconds will be deducted from the remaining time.");
 
-promptQuiz.append(h1);
-promptQuiz.append(h4);
-$("#quiz").append(promptQuiz);
+startDiv.addClass("row");
 
-//TIMER FUNCTION
+filler.addClass("col-sm-4");
+filler.attr("id", "filler");
+
+startButton.addClass("col-sm-4");
+startButton.attr("id", "start-button")
+startButton.text("Start");
+
+scoreBlurb.text(`You achieved a score of: `);
+submitButton.attr("type", "submit");
+input.attr("type", "text");
+input.attr("id", "input-initials");
+
+$("#headings").append(highscoreLink);
+$("#headings").append(timerDiv);
+quizPrompt.append(h1);
+quizPrompt.append(h4);
+$("#quiz").append(quizPrompt);
+$("#quiz").append(filler);
+$("#quiz").append(startButton);
+initialForm.append(scoreBlurb);
+initialForm.append(input);
+initialForm.append(submitButton);
+
 function startTimer() {
     $("#quiz").empty();
     let timer = setInterval(function () {
@@ -207,13 +106,25 @@ function startTimer() {
     return timer;
 }
 
-function setupQuestions() {
+function addQuestionElements() {
+    $("#quiz").empty();
+    questionEl.attr("id", "question");
+    choice1El.attr("id", "choice-1");
+    choice2El.attr("id", "choice-2");
+    choice3El.attr("id", "choice-3");
+    choice4El.attr("id", "choice-4");
+    choice1El.attr("data-value", "0");
+    choice2El.attr("data-value", "1");
+    choice3El.attr("data-value", "2");
+    choice4El.attr("data-value", "3");
+    choiceListEl.append(choice1El);
+    choiceListEl.append(choice2El);
+    choiceListEl.append(choice3El);
+    choiceListEl.append(choice4El);
     $("#quiz").append(questionEl);
     $("#quiz").append(choiceListEl);
 }
 
-
-//QUIZ HANDLER
 function startQuiz() {
     let question = $("#question");
     let choice1 = $("#choice-1");
@@ -230,73 +141,101 @@ function startQuiz() {
         choice4.text(quiz[questionPointer].choices[3]);
     }
     nextQuestion();
-
-
 }
 
-//START BUTTON LOGIC
-let startDiv = $("<div>");
-let filler = $("<div>");
-let startButton = $("<button>");
-
-startDiv.addClass("row");
-
-filler.addClass("col-sm-4");
-filler.attr("id", "filler");
-
-
-startButton.addClass("col-sm-4");
-startButton.attr("id", "start-button")
-startButton.text("Start");
 startButton.on("click", function () {
-    startTimer();
-    setupQuestions();
+    timerStopRef = startTimer();
+    addQuestionElements();
     startQuiz();
 });
-$("#quiz").append(filler);
-$("#quiz").append(startButton);
 
+choice1El.on("click", function () {
+    if (parseInt(choice1El.attr("data-value")) === quiz[questionPointer].answer) {
+        console.log("this is correct");
+        questionPointer++;
+        console.log(questionPointer);
+        if (questionPointer < 5) {
+            startQuiz();
+        }
+        if (questionPointer == 5) {
+            $("#quiz").empty();
+            clearInterval(timerStopRef);
+            score = alottedTime;
+            console.log(score);
+            scoreBlurb.text(`You achieved a score of: ${score} \nSave your initials to the Highscore list?`);
+            $("#quiz").append(initialForm);
+        }
+    } else {
+        alottedTime -= 10;
+    }
+});
+choice2El.on("click", function () {
+    if (parseInt(choice2El.attr("data-value")) === quiz[questionPointer].answer) {
+        console.log("this is correct");
+        questionPointer++;
+        console.log(questionPointer);
+        if (questionPointer < 5) {
+            startQuiz();
+        }
+        if (questionPointer == 5) {
+            $("#quiz").empty();
+            clearInterval(timerStopRef);
+            score = alottedTime;
+            console.log(score);
+            scoreBlurb.text(`You achieved a score of: ${score} \nSave your initials to the Highscore list?`);
+            $("#quiz").append(initialForm);
+        }
+    } else {
+        alottedTime -= 10;
+    }
+});
+choice3El.on("click", function () {
+    if (parseInt(choice3El.attr("data-value")) === quiz[questionPointer].answer) {
+        console.log("this is correct");
+        questionPointer++;
+        console.log(questionPointer);
+        if (questionPointer < 5) {
+            startQuiz();
+        }
+        if (questionPointer == 5) {
+            $("#quiz").empty();
+            clearInterval(timerStopRef);
+            score = alottedTime;
+            console.log(score);
+            scoreBlurb.text(`You achieved a score of: ${score} \nSave your initials to the Highscore list?`);
+            $("#quiz").append(initialForm);
+        }
+    } else {
+        alottedTime -= 10;
+    }
+});
+choice4El.on("click", function () {
+    if (parseInt(choice4El.attr("data-value")) === quiz[questionPointer].answer) {
+        console.log("this is correct");
+        questionPointer++;
+        console.log(questionPointer);
+        if (questionPointer < 5) {
+            startQuiz();
+        }
+        if (questionPointer == 5) {
+            $("#quiz").empty();
+            clearInterval(timerStopRef);
+            score = alottedTime;
+            console.log(score);
+            scoreBlurb.text(`You achieved a score of: ${score} \nSave your initials to the Highscore list?`);
+            $("#quiz").append(initialForm);
+        }
+    } else {
+        alottedTime -= 10;
+    }
+});
 
-function highscoreUpdate() {
-    let newRow = $("<tr>");
-    let col1 = $("<td>");
-    let col2 = $("<td>");
-    col1.text(highscores[0].initials);
-    col2.text(highscores[0].hs);
-    newRow.append(col1);
-    newRow.append(col2);
-    $("#highscores").append(newRow);
-    console.log($("#highscores"));
-}
+submitButton.on("click", function (e) {
+    e.preventDefault();
+    let initials = document.getElementById("input-initials").value;
+    window.localStorage.setItem(initials, score);
+});
 
-// function startQuiz() {
+highscoreLink.on("click", function () {
 
-//     let question = $("<h1>");
-//     let choiceList = $("<ol>");
-//     let filler = $("<div>");
-//     filler.addClass("col-sm-1");
-//     choiceList.addClass("col-sm-8");
-//     question.addClass("col-sm-12");
-//     question.text(questions[0]);
-//     question.attr("style", "margin-top: 150px;")
-//     $("#quiz").append(question);
-//     for (let j = 0; j < choices[0].length; j++) {
-//         let choice = $("<li>");
-//         choice.text(choices[0][j]);
-//         choice.addClass("col-md-4");
-//         choice.addClass("choices-class")
-//         choice.attr("value", j);
-//         // choice.attr("style", "");
-//         choice.attr("id", `choice${j}`);
-//         // console.log("clickevent");
-//         choiceList.append(choice);
-//     }
-//     $("#quiz").append(filler);
-//     $("#quiz").append(choiceList);
-// }
-// $(".choices-class").on("click", function () {
-//     console.log("listening to choices");
-//     if (choiceBox.attr("value") === answerKey[0]) {
-//         console.log(correct);
-//     }
-// });
+})
