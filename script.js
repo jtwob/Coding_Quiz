@@ -235,7 +235,3 @@ submitButton.on("click", function (e) {
     let initials = document.getElementById("input-initials").value;
     window.localStorage.setItem(initials, score);
 });
-
-highscoreLink.on("click", function () {
-
-})
