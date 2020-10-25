@@ -1,3 +1,5 @@
+/* html tag styling starts here */
+
 body{
     background-image: url(Assets/css-dot-pattern-grid-background.png);
 }
@@ -26,6 +28,7 @@ li {
     padding-left: 5px;
 }
 
+/* class styling starts here */
 .container{
     position: relative;
     margin-top: 60px;
@@ -33,6 +36,7 @@ li {
     height: 100%;
 }
 
+/* ID styling starts here */
 #score-blurb{
     width: 60%;
     margin-top: 20px;
