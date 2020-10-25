@@ -48,6 +48,7 @@ let scoreBlurb = $("<h4>");
 let initialForm = $("<form>");
 let input = $("<input>");
 let submitButton = $("<input>");
+let backLink = $("<a>");
 let score = 0;
 
 highscoreLink.attr("href", "./highscores.html");
@@ -78,9 +79,14 @@ startButton.attr("id", "start-button")
 startButton.text("Start");
 
 scoreBlurb.text(`You achieved a score of: `);
+scoreBlurb.attr("id", "score-blurb");
 submitButton.attr("type", "submit");
+submitButton.attr("id", "submit-button");
 input.attr("type", "text");
 input.attr("id", "input-initials");
+backLink.attr("href", "./index.html");
+backLink.text("Take the Quiz Again");
+backLink.attr("id", "back-link");
 
 $("#headings").append(highscoreLink);
 $("#headings").append(timerDiv);
@@ -92,6 +98,7 @@ $("#quiz").append(startButton);
 initialForm.append(scoreBlurb);
 initialForm.append(input);
 initialForm.append(submitButton);
+initialForm.append(backLink);
 
 function startTimer() {
     $("#quiz").empty();
