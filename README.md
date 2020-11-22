@@ -6,6 +6,13 @@ I recieved no assistance and all of the work seen here is my own. The main scrip
 the HTML for the quiz, adding and removing elements as necessary. Using a combination of bootstrap and css for visuals, and jquery for easy HTML 
 creation and alteration, this is my largest JS project by far. I am glad it all came together.
 
+## Tech
+* Browser Local Storage
+* JavaScript
+* HTML
+* Bootstrap
+* jQuery
+
 ## Files
 * Assets
     * css-dot-pattern-grid-background.png
